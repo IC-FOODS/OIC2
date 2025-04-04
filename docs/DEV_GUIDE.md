@@ -60,3 +60,19 @@ Managed via `urlStateManager.ts`.
 
 - Vocabulary hierarchies (e.g. NCBI taxonomy) are used to filter graph views.
 - Vocab registry supports OWL/SKOS-based structures.
+
+---
+
+## 🧩 New Microservice Architecture
+
+Each core data or workflow function is implemented as a microservice:
+
+| Service | Description |
+|---------|-------------|
+| CSVParserService | Parses CSV into structured tables |
+| SchemaInferenceService | Detects PK/FK and builds schema |
+| GraphBuilderService | Converts schema+tables to RDF quads |
+| VocabularyService | Loads and filters hierarchical vocab trees |
+
+All services implement `BaseService` and are registered in `ServiceRegistry`.
+

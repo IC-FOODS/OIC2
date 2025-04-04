@@ -1,80 +1,71 @@
-# OIC2 Scaffold – Offline-First Semantic Graph Web App
+# OIC2
 
-This project scaffold sets up the foundation for building an offline-first, React-based semantic graph visualization tool that ingests CSV/relational data, performs vocabulary mapping, and renders enriched knowledge graphs.
+Offline-first, fully client-side knowledge graph application scaffold for data import, semantic mapping, and graph visualization.
 
-## 🔧 Stack
-
-- **React + Vite + Tailwind CSS**
-- **TypeScript** for all source files
-- **IndexedDB** via Dexie.js
-- **Cytoscape.js** (pluggable renderer pattern)
-- **QuadStore** for storing RDF-like graph triples
-- **EventBus** for decoupled communication
-- **Workflow Engine** for human-guided step sequences
-- **Vocabulary Repository** + **Registry** for semantic enrichment
+Built with:
+- React
+- Tailwind CSS
+- Chakra UI
+- Cytoscape.js (default KG renderer)
+- react-resizable-panels
+- IndexedDB + Web Workers
+- Microservice architecture for modularity
 
 ---
 
-## 🗂️ Folder Structure
+## ✨ Key Features
+
+- Modular, draggable layout with state persistence
+- Dynamic panel system with registry-based plug-ins
+- CSV/relational import → RDF-style graph generation
+- Vocabulary filtering (e.g. NCBI Taxonomy)
+- Shareable layouts via URL state
+- OWL/SKOS vocabulary import
+- Fully client-side: no server or database required
+
+---
+
+## 🧭 Project Layout
 
 ```
 src/
-├── components/         # UI components (workflow steps, filters)
-├── contexts/           # Composition root & React contexts
-├── eventbus/           # Pub-sub utility
-├── services/           # App logic (DB, vocab, graph builder)
-├── styles/             # Tailwind entrypoint
-├── utils/              # Schema inference, helpers
-├── workflows/          # Workflow engine & definitions
-├── types/              # Centralized TypeScript types
+├── layout/              # AppShell + Header/Footer + Panel layout
+├── components/          # UI modules and modals
+├── panels/              # Panel containers
+├── services/            # Modular microservice APIs (parser, schema, vocab, etc.)
+├── utils/               # General utilities (CSV parsing, state, etc.)
+├── graph/               # RDF quad generation
+├── schema/              # Schema inference logic
+├── registry/            # Panel registry
+├── docs/                # Developer documentation
 ```
 
 ---
 
-## 🧠 Core Concepts
+## 🧑‍💻 Developer Docs
 
-### 🧭 Composition Root
+All technical documentation lives in the [`docs/`](./docs) folder:
 
-Initializes core services (e.g., QuadStore, DB) and provides them via React Context.
-
-### 🧱 QuadStore
-
-Simple in-memory store to accumulate subject–predicate–object–graph relationships.
-
-### ⚙️ Workflow Engine
-
-Manages sequences of guided steps (CSV import, schema preview, mapping, term matching).
-
-### 🔍 Vocabulary Repository
-
-Resolves term matches from public vocabularies (e.g., OLS) and user-supplied OWL/SKOS files.
-
-### ✅ Vocabulary Registry
-
-Manages vocabularies used for filtering and enrichment.
+- [`DEV_GUIDE.md`](./docs/DEV_GUIDE.md) – full system architecture
+- [`README.layout.md`](./docs/README.layout.md) – panel layout and resizing system
+- [`README.registry.md`](./docs/README.registry.md) – service and panel registry system
 
 ---
 
-## 🚀 Setup & Run
+## 🛠 Getting Started
 
-```bash
-npm install
-npm run dev
-```
+1. Clone repo
+2. `npm install`
+3. `npm run dev` – launches Vite-powered local server
 
----
-
-## ✨ Extending
-
-To add a new step to the workflow:
-1. Create a new component in `components/workflowSteps/`
-2. Register it in `componentRegistry.ts`
-3. Add it to a workflow definition
-
-To integrate vocab filtering:
-- Register your vocab in the registry
-- Add your UI in `components/filters/`
+Use the layout panel controls to open graph viewers, vocab trees, or import panels.
 
 ---
 
-Built with ❤️ for the IC-FOODS ecosystem.
+## 📡 Shareable URLs
+
+Layout and filter state is encoded in the URL. On load:
+- If datasets or vocabularies are missing, the app will prompt user to upload or link
+- Authenticated services (e.g. GitHub, Google Drive) can be connected by the user (future)
+
+---
