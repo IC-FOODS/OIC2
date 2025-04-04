@@ -1,25 +1,47 @@
 /**
- * PanelColumn.tsx
+ * PanelColumn.tsx (Updated)
  *
- * A wrapper for rendering components into a layout panel.
- * The 'id' prop identifies which region is being rendered (left, right, center, etc).
+ * Dynamically renders components assigned to a specific layout region
+ * using the panelRegistry and defaultPanels.
+ * Includes safety checks and fallback rendering.
  */
 
 import React from 'react';
+import { defaultPanels } from '../../config/defaultPanels';
+import { panelRegistry } from '../../registry/panelRegistry';
 
 interface Props {
-  id: string;
+  region: string; // e.g. "left", "center", "right"
 }
 
-export const PanelColumn: React.FC<Props> = ({ id }) => {
+export const PanelColumn: React.FC<Props> = ({ region }) => {
+  // Get all panels registered for this region
+  const panels = defaultPanels.filter(panel => panel.region === region);
+
   return (
-    <div className="h-full w-full p-2 overflow-auto">
-      <div className="border border-dashed border-gray-400 rounded p-2 h-full bg-white text-gray-700">
-        <p className="text-xs mb-1 font-semibold uppercase tracking-wider text-gray-500">
-          Panel: {id}
-        </p>
-        <div className="text-sm">[Drop content here]</div>
-      </div>
+    <div className="h-full w-full p-2 overflow-auto space-y-3">
+      {panels.length > 0 ? (
+        panels.map((panel, idx) => {
+          const Component = panelRegistry[panel.componentId];
+
+          if (!Component) {
+            console.warn(`No component registered for panel: ${panel.componentId}`);
+            return (
+              <div key={panel.id || idx} className="p-2 border border-red-400 text-red-700 text-sm bg-red-50 rounded">
+                ⚠️ Component "{panel.componentId}" not found
+              </div>
+            );
+          }
+
+          return (
+            <div key={panel.id || idx} className="border border-gray-200 rounded shadow-sm p-1 bg-white">
+              <Component />
+            </div>
+          );
+        })
+      ) : (
+        <div className="text-sm text-gray-500 italic">No panels registered for region: {region}</div>
+      )}
     </div>
   );
 };
