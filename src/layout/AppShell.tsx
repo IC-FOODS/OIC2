@@ -1,66 +1,63 @@
 /**
- * AppShell.tsx
+ * AppShell.tsx (Merged)
  *
- * This component defines the full application shell layout.
- * It includes a fixed-height header and footer, and a center content area
- * organized into three resizable columns. The center column is further
- * divided into a vertically resizable top, middle, and bottom section.
- *
- * Panel sizes are persisted using autoSaveId to support stateful layout on reload.
+ * Combines original OIC2 layout (resizable panels, Header/Footer) with the WorkflowLauncherDrawer.
+ * Maintains panel persistence, adjustable regions, and registers the drawer in far-left space.
  */
 
 import React from 'react';
-import { PanelGroup, Panel, PanelResizeHandle } from 'react-resizable-panels';
+import { PanelGroup, Panel } from 'react-resizable-panels';
+import { Box } from '@chakra-ui/react';
+import { PanelColumn } from '../components/layout/PanelColumn';
 import { Header } from './Header';
 import { Footer } from './Footer';
-import { PanelColumn } from './PanelColumn';
+import { WorkflowLauncherDrawer } from '../components/drawer/WorkflowLauncherDrawer';
 
 export const AppShell: React.FC = () => {
   return (
-    <div className="h-screen w-screen flex flex-col overflow-hidden bg-gray-50">
-      {/* Fixed Header (12% height) */}
-      <div className="h-[12%] shrink-0">
-        <Header />
-      </div>
+    <Box className="flex flex-col h-screen">
+      {/* Header area */}
+      <Header />
 
-      {/* Central Panel Group (3-column layout) */}
-      <div className="flex-grow">
-        <PanelGroup direction="horizontal" autoSaveId="oic2-horiz-panels">
+      {/* Main layout region with drawer and panels */}
+      <Box className="flex flex-grow overflow-hidden relative">
+        {/* Injected Drawer */}
+        <WorkflowLauncherDrawer />
+
+        {/* Spacer to offset main layout by drawer width */}
+        <Box className="w-10 shrink-0" />
+
+        {/* Resizable 3-column layout */}
+        <PanelGroup autoSaveId="main-layout" direction="horizontal">
           {/* Left Panel */}
-          <Panel defaultSize={15} minSize={10}>
-            <PanelColumn id="left" />
+          <Panel defaultSize={15}>
+            <PanelColumn region="left" />
           </Panel>
-          <PanelResizeHandle className="w-1 bg-gray-300 hover:bg-blue-400 cursor-col-resize" />
 
-          {/* Center Column: Stacked vertical panels */}
-          <Panel defaultSize={70} minSize={40}>
-            <PanelGroup direction="vertical" autoSaveId="oic2-vert-panels">
-              <Panel defaultSize={15} minSize={10}>
-                <PanelColumn id="center-top" />
+          {/* Center Panel */}
+          <Panel defaultSize={70}>
+            <PanelGroup autoSaveId="center-stack" direction="vertical">
+              <Panel defaultSize={15}>
+                <PanelColumn region="center-top" />
               </Panel>
-              <PanelResizeHandle className="h-1 bg-gray-300 hover:bg-blue-400 cursor-row-resize" />
-              <Panel>
-                <PanelColumn id="center" />
+              <Panel defaultSize={60}>
+                <PanelColumn region="center" />
               </Panel>
-              <PanelResizeHandle className="h-1 bg-gray-300 hover:bg-blue-400 cursor-row-resize" />
-              <Panel defaultSize={15} minSize={10}>
-                <PanelColumn id="center-bottom" />
+              <Panel defaultSize={25}>
+                <PanelColumn region="center-bottom" />
               </Panel>
             </PanelGroup>
           </Panel>
 
           {/* Right Panel */}
-          <PanelResizeHandle className="w-1 bg-gray-300 hover:bg-blue-400 cursor-col-resize" />
-          <Panel defaultSize={15} minSize={10}>
-            <PanelColumn id="right" />
+          <Panel defaultSize={15}>
+            <PanelColumn region="right" />
           </Panel>
         </PanelGroup>
-      </div>
+      </Box>
 
-      {/* Fixed Footer (6% height) */}
-      <div className="h-[6%] shrink-0">
-        <Footer />
-      </div>
-    </div>
+      {/* Footer area */}
+      <Footer />
+    </Box>
   );
 };
