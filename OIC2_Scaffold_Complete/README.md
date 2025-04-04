@@ -1,1 +1,0 @@
-# OIC2 Documentation Stub

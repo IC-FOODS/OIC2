@@ -1,1 +1,0 @@
-<div>OIC2 Core Placeholder</div>
