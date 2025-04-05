@@ -8,7 +8,7 @@
 import React from 'react';
 import { PanelGroup, Panel } from 'react-resizable-panels';
 import { Box } from '@chakra-ui/react';
-import { PanelColumn } from '../components/layout/PanelColumn';
+import { PanelColumn } from "./PanelColumn";
 import { Header } from './Header';
 import { Footer } from './Footer';
 import { WorkflowLauncherDrawer } from '../components/drawer/WorkflowLauncherDrawer';
