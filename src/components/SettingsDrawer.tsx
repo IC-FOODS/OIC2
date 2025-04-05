@@ -8,13 +8,12 @@
 import React, { useState } from 'react';
 import {
   Drawer,
-  DrawerOverlay,
   DrawerContent,
   DrawerHeader,
   DrawerBody,
   DrawerCloseButton,
-  Button
-} from '@chakra-ui/react';
+  useDisclosure,
+} from "@chakra-ui/react";
 
 export const SettingsDrawer: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -24,13 +23,12 @@ export const SettingsDrawer: React.FC = () => {
       <Button variant="ghost" onClick={() => setIsOpen(true)} size="sm">
         👤
       </Button>
-      <Drawer placement="right" onClose={() => setIsOpen(false)} isOpen={isOpen}>
-        <DrawerOverlay />
+      <Drawer isOpen={isOpen} placement="right" onClose={onClose}>
         <DrawerContent>
           <DrawerCloseButton />
-          <DrawerHeader>User Settings</DrawerHeader>
+          <DrawerHeader>Settings</DrawerHeader>
           <DrawerBody>
-            <p>[Settings tree will load here]</p>
+            {/* settings UI here */}
           </DrawerBody>
         </DrawerContent>
       </Drawer>
